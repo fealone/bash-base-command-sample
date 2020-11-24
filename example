@@ -1,0 +1,53 @@
+#!/bin/bash -e
+
+function show-help () {
+cat << EOF
+Usage: example [ARGS1] [OPTIONS]...
+
+Args1:
+  Args1 is an example argument.
+
+Options:
+  -h, --help  Show this message and exit.
+  -o, --optional  Optional is an example option
+  -i, --is-true  Is-true is an example boolean option
+EOF
+exit
+}
+
+ARGS1=$1
+OPTIONAL=""
+IS_TRUE=false
+POS=()
+
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -h|--help)
+    show-help
+    ;;
+    -o|--optional)
+    OPTIONAL=$2
+    shift
+    shift
+    ;;
+    -i|--is-true)
+    IS_TRUE=true
+    shift
+    ;;
+    *)
+    POSITIONAL+=("$1")
+    shift
+    ;;
+esac
+done
+
+if [ "$ARGS1" = "" ]; then
+    show-help
+fi
+
+echo $ARGS1
+echo $OPTIONAL
+echo $IS_TRUE
